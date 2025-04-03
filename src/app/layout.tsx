@@ -1,14 +1,19 @@
-import type { Metadata } from "next";
-import { Poppins } from "next/font/google";
-import "./globals.css";
-import Navbar from "@/components/Navbar";
+import type { Metadata } from 'next';
+import { Poppins } from 'next/font/google';
+import { SessionProvider } from 'next-auth/react';
+
+import './globals.css';
+
+import Navbar from '@/components/Navbar';
+
+import ReactQueryProvider from '@/providers/ReactQueryProvider';
 
 const PoppinsFont = Poppins({
     weight: ['300']
 });
 
 export const metadata: Metadata = {
-  title: "Buff Invetory Tracker"
+  title: 'Buff Inventory Tracker'
 };
 
 export default function RootLayout({
@@ -16,14 +21,20 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return (
-    <html lang="en">
-      <body className={`${PoppinsFont} antialiased`}>
-        <div className={`relative`}>
-            <Navbar />
-            {children}
-        </div>
-      </body>
-    </html>
+    return (
+        <html lang='en'>
+            <body className={`${PoppinsFont} antialiased`}>
+                <SessionProvider>
+                    <ReactQueryProvider>
+                        <div className={`relative`}>
+                            <Navbar />
+                            <div className={`pt-10`}>
+                                {children}
+                            </div>
+                        </div>
+                    </ReactQueryProvider>
+                </SessionProvider>
+            </body>
+        </html>
   );
 }
